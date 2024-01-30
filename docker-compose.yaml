@@ -1,0 +1,28 @@
+version: '3'
+services:
+  pgdatabase:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=ny_taxi
+    volumes: 
+       - "./ny_taxi_postgres_data:/var/lib/postgresql/data:rw"
+    ports: 
+       -  "5432:5432"
+  magic:
+    image: mageai/mageai:latest
+    command: mage start week2_hw_Taxi_pipline
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      USER_CODE_PATH: /home/src/week2_hw_Taxi_pipline
+      ENV: ${ENV}
+    ports:
+      - 6789:6789
+    volumes: 
+      - .:/home/src/
+    restart: on-failure:5
