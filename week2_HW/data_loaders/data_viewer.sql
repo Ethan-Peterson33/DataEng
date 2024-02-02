@@ -1,0 +1,1 @@
+select * from ny_taxi.green_taxi limit 100
